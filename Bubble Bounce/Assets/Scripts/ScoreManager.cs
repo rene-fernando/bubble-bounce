@@ -1,16 +1,41 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using TMPro; // Add this!
 
 public class ScoreManager : MonoBehaviour
 {
-    public int score = 0;
-    public TMP_Text scoreText;
+    public static ScoreManager Instance;
+
+    public TextMeshProUGUI scoreText;  // ← TMP type
+
+    private int score = 0;
+
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
+        UpdateUI();
+    }
 
     public void AddScore(int amount)
     {
         score += amount;
-        Debug.Log("Score updated: " + score);
-        scoreText.text = "Ducks: " + score;
+        UpdateUI();
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        if (scoreText != null)
+            scoreText.text = "Score: " + score;
+        else
+            Debug.LogWarning("Score Text is not assigned!");
     }
 }

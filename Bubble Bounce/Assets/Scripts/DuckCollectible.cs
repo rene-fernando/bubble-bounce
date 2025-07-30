@@ -6,7 +6,7 @@ public class DuckCollectible : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            FindFirstObjectByType<ScoreManager>().AddScore(1);
+            FindFirstObjectByType<ScoreManager>().AddScore(2);
             Destroy(gameObject);
         }
     }

@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
-    public Image[] hearts; // Assign 3 heart images in Inspector
+    public Image[] hearts; // Full hearts
+    public Image[] emptyHearts; // Empty hearts
     public int maxLives = 3;
     private int currentLives;
 
@@ -30,7 +31,9 @@ public class HealthManager : MonoBehaviour
     {
         for (int i = 0; i < hearts.Length; i++)
         {
-            hearts[i].enabled = i < currentLives;
+            bool isAlive = i < currentLives;
+            hearts[i].enabled = isAlive;
+            emptyHearts[i].enabled = !isAlive;
         }
     }
 

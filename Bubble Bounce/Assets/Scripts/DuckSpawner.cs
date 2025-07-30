@@ -1,36 +1,84 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class DuckSpawner : MonoBehaviour
 {
     public GameObject duckPrefab;
     public int numberOfDucks = 10;
+    public float verticalOffset = 0.5f;
+    public float minDistanceBetweenDucks = 0.75f;
+    public Transform player; // Assign this in the inspector
+    public float duckSpawnInterval = 2f;
 
     void Start()
     {
-        StartCoroutine(SpawnDucksWithDelay());
+        StartCoroutine(SpawnDucksContinuously());
     }
 
-    System.Collections.IEnumerator SpawnDucksWithDelay()
+    private IEnumerator SpawnDucksContinuously()
     {
-        yield return new WaitForSeconds(0.1f); // wait a frame or two
-
-        var positions = BubbleSpawner.bubblePositions;
-
-        if (positions.Count == 0)
+        while (true)
         {
-            Debug.LogWarning("No bubble positions found!");
-            yield break;
+            SpawnDuckWave();
+            yield return new WaitForSeconds(duckSpawnInterval);
+        }
+    }
+
+    private void SpawnDuckWave()
+    {
+        GameObject[] bubbles = GameObject.FindGameObjectsWithTag("Platform");
+
+        if (bubbles.Length == 0)
+        {
+            Debug.LogWarning("No bubbles found to spawn ducks on.");
+            return;
         }
 
-        for (int i = 0; i < numberOfDucks; i++)
+        List<Transform> chosenSpots = new List<Transform>();
+        int attempts = 0;
+        int maxAttempts = 200;
+
+        while (chosenSpots.Count < numberOfDucks && attempts < maxAttempts)
         {
-            Vector3 basePos = positions[Random.Range(5, positions.Count)];
+            GameObject bubble = bubbles[Random.Range(0, bubbles.Length)];
+            Vector3 pos = bubble.transform.position;
 
-            float xOffset = Random.Range(-0.5f, 0.5f);
-            float yOffset = Random.Range(0.6f, 1.2f);
+            // Favor bubbles around or above the player
+            if (!bubble.activeInHierarchy ||
+                pos.x < -7f || pos.x > 7f ||
+                pos.y < player.position.y || pos.y > player.position.y + 30f)
+            {
+                attempts++;
+                continue;
+            }
 
-            Vector3 duckPos = new Vector3(basePos.x + xOffset, basePos.y + yOffset, 0);
-            Instantiate(duckPrefab, duckPos, Quaternion.identity);
+            bool tooClose = chosenSpots.Any(chosen => Vector3.Distance(chosen.position, pos) < minDistanceBetweenDucks);
+            if (!tooClose || attempts > maxAttempts / 4)
+            {
+                Vector3 duckPos = pos + new Vector3(0, verticalOffset, 0);
+                GameObject duck = Instantiate(duckPrefab, duckPos, Quaternion.identity);
+                StartCoroutine(ParentDuckNextFrame(duck.transform, bubble.transform));
+                chosenSpots.Add(bubble.transform);
+            }
+
+            attempts++;
+        }
+
+        if (attempts >= maxAttempts)
+        {
+            Debug.LogWarning("Stopped duck placement early due to too many overlap attempts.");
+        }
+    }
+
+    private IEnumerator ParentDuckNextFrame(Transform duck, Transform bubble)
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (duck != null && bubble != null && bubble.gameObject.activeInHierarchy)
+        {
+            duck.SetParent(bubble);
         }
     }
 }

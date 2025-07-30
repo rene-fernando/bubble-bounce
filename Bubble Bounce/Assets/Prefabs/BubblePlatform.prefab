@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9103176313622040132}
   - component: {fileID: 7250045208717951261}
   - component: {fileID: 3382331562566491158}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BubblePlatform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5712959122012955994, guid: 9e4551d992d744c7a93b8143764c0d9f, type: 3}
+  m_Sprite: {fileID: 8944853044452083345, guid: 834a40c579e28471c8fced63628e5ccc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
