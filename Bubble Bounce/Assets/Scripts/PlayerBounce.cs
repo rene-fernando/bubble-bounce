@@ -38,6 +38,7 @@ public class PlayerBounce : MonoBehaviour
     public Sprite babyRightJump;
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
+    public AudioClip bounceSound;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -45,11 +46,13 @@ public class PlayerBounce : MonoBehaviour
     private bool isJumping;
     private float moveInput;
     private bool facingRight = true;
+    private AudioSource audioSource;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -61,7 +64,7 @@ public class PlayerBounce : MonoBehaviour
         else if (moveInput < 0) facingRight = false;
 
         // Horizontal movement
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
         // Update jump sprite while airborne
         if (!IsGrounded())
@@ -72,15 +75,23 @@ public class PlayerBounce : MonoBehaviour
         // Jumping when Space is pressed
         if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            audioSource.PlayOneShot(bounceSound);
             isJumping = true;
             sr.sprite = facingRight ? babyRightJump : babyLeftJump;
         }
 
         // Landed
-        if (IsGrounded() && rb.velocity.y <= 0.1f)
+        if (IsGrounded() && rb.linearVelocity.y <= 0.1f)
         {
             isJumping = false;
+            Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            if (hit != null && hit.gameObject != lastBouncedPlatform && hit.CompareTag("Platform") && !hit.CompareTag("Ground"))
+            {
+                lastBouncedPlatform = hit.gameObject;
+                ScoreManager.Instance.AddScore(1);
+                Debug.Log("Score +1");
+            }
             sr.sprite = facingRight ? babyRight : babyLeft;
         }
 
