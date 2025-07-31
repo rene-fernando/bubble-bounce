@@ -63,6 +63,20 @@ public class HazardBubbleSpawner : MonoBehaviour
 
         HazardCollision destroyScript = hazard.AddComponent<HazardCollision>();
 
+        // Load and assign the damage sound
+        AudioClip damageSound = Resources.Load<AudioClip>("sounds/damage");
+        if (damageSound != null)
+        {
+            AudioSource audioSource = hazard.AddComponent<AudioSource>();
+            audioSource.clip = damageSound;
+            destroyScript.damageSound = damageSound;
+            destroyScript.audioSource = audioSource;
+        }
+        else
+        {
+            Debug.LogWarning("Damage sound not found in Resources/sounds/damage");
+        }
+
         // Randomize movement so they aren't synchronized
         HazardMover mover = hazard.GetComponent<HazardMover>();
         if (mover != null)

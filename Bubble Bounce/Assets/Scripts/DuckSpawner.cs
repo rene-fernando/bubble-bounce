@@ -64,21 +64,36 @@ public class DuckSpawner : MonoBehaviour
             }
 
             attempts++;
-        }
-
-        if (attempts >= maxAttempts)
-        {
-            Debug.LogWarning("Stopped duck placement early due to too many overlap attempts.");
+            if (attempts >= maxAttempts)
+            {
+                Debug.LogWarning("Stopped duck placement early due to too many overlap attempts.");
+            }
         }
     }
 
     private IEnumerator ParentDuckNextFrame(Transform duck, Transform bubble)
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame(); // Wait for the current frame to finish
+        yield return null; // Wait for one additional frame to ensure stability
 
-        if (duck != null && bubble != null && bubble.gameObject.activeInHierarchy)
+        // Only parent if duck isn't the player and bubble is valid
+        if (duck != null && bubble != null &&
+            duck.gameObject.scene.IsValid() &&
+            bubble.gameObject.scene.IsValid() &&
+            bubble.gameObject.activeInHierarchy &&
+            !bubble.CompareTag("Player") &&
+            !duck.CompareTag("Player"))
         {
-            duck.SetParent(bubble);
+            // Final check before parenting
+            if (bubble != null && bubble.gameObject.activeInHierarchy)
+            {
+                duck.SetParent(bubble);
+                Debug.Log($"Parented {duck.name} to {bubble.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"Bubble {bubble?.name} became invalid before parenting.");
+            }
         }
     }
 }
