@@ -178,15 +178,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Score: -1'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 60dab671834fd42f4b24f5cf0b0bd211, type: 2}
+  m_sharedMaterial: {fileID: 8144769365923792326, guid: 60dab671834fd42f4b24f5cf0b0bd211, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -203,13 +203,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1410,11 +1410,11 @@ AudioSource:
   m_GameObject: {fileID: 1381765258}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6831736337213865884, guid: 018e0340cb2964383b7b2751a077a9f6, type: 2}
   m_audioClip: {fileID: 8300000, guid: ee6647d0814834de6bbdcf4f72727944, type: 3}
   m_Resource: {fileID: 8300000, guid: ee6647d0814834de6bbdcf4f72727944, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1968,7 +1968,9 @@ MonoBehaviour:
   babyLeftJump: {fileID: -859626723232357154, guid: 802efbe71ffdc40dfbdcdf8e3f179665, type: 3}
   babyRightJump: {fileID: 8366569088324635963, guid: b030ac5311c084c348e7fbba44442f1e, type: 3}
   moveSpeed: 5
-  jumpForce: 8
+  jumpForce: 7.5
+  bounceSound: {fileID: 8300000, guid: 68f3166ec263b4490a668bd2c818cf5c, type: 3}
+  sfxMixerGroup: {fileID: 0}
 --- !u!61 &1747178772
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2107,7 +2109,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.46044, y: -2.6, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 2.75, y: 2.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 944239841}
@@ -2122,7 +2124,7 @@ AudioSource:
   m_GameObject: {fileID: 1747178770}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1179368275330229400, guid: 018e0340cb2964383b7b2751a077a9f6, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -2321,6 +2323,7 @@ MonoBehaviour:
   startY: 10
   spawnDelay: 0.3
   destroyBelowDistance: 10
+  sfxGroup: {fileID: 1179368275330229400, guid: 018e0340cb2964383b7b2751a077a9f6, type: 2}
 --- !u!4 &2068130094
 Transform:
   m_ObjectHideFlags: 0

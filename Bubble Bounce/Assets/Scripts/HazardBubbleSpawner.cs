@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Audio; // Added for AudioMixerGroup support
 
 public class HazardBubbleSpawner : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class HazardBubbleSpawner : MonoBehaviour
     private List<GameObject> activeHazards = new List<GameObject>();
 
     private float lastY;
+
+    [Header("Audio")]
+    public AudioMixerGroup sfxGroup; // Assign in inspector
 
     void Start()
     {
@@ -69,6 +73,11 @@ public class HazardBubbleSpawner : MonoBehaviour
         {
             AudioSource audioSource = hazard.AddComponent<AudioSource>();
             audioSource.clip = damageSound;
+            audioSource.playOnAwake = false;
+            if (sfxGroup != null)
+            {
+                audioSource.outputAudioMixerGroup = sfxGroup; // Route through SFX mixer group
+            }
             destroyScript.damageSound = damageSound;
             destroyScript.audioSource = audioSource;
         }

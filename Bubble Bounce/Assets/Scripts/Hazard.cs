@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
+    public GameObject popEffect; // Assign in inspector
+
     private HealthManager healthManager;
 
     void Start()
@@ -10,13 +12,15 @@ public class Hazard : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other)
-{
-    Debug.Log("Triggered with: " + other.name);
-
-    if (other.CompareTag("Player"))
     {
-        Debug.Log("Player touched hazard!");
-        healthManager.TakeDamage();
+        if (other.CompareTag("Player"))
+        {
+            healthManager.TakeDamage();
+
+            if (popEffect != null)
+                Instantiate(popEffect, transform.position, Quaternion.identity);
+
+            Destroy(gameObject);
+        }
     }
-}
 }

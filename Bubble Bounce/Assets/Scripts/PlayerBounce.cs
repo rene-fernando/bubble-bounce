@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio; // Added for AudioMixerGroup
 using System.Collections;
+using System.Collections.Generic;
 
 public static class UnparentManager
 {
@@ -39,10 +41,11 @@ public class PlayerBounce : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     public AudioClip bounceSound;
+    public AudioMixerGroup sfxMixerGroup; // New field to assign SFX mixer group
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
-    private GameObject lastBouncedPlatform;
+    private HashSet<GameObject> visitedPlatforms = new HashSet<GameObject>();
     private bool isJumping;
     private float moveInput;
     private bool facingRight = true;
@@ -53,6 +56,10 @@ public class PlayerBounce : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
+        if (sfxMixerGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = sfxMixerGroup; // Route bounce sound through SFX mixer group
+        }
     }
 
     void Update()
@@ -86,11 +93,15 @@ public class PlayerBounce : MonoBehaviour
         {
             isJumping = false;
             Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-            if (hit != null && hit.gameObject != lastBouncedPlatform && hit.CompareTag("Platform") && !hit.CompareTag("Ground"))
+            if (hit != null && hit.CompareTag("Platform") && !hit.CompareTag("Ground"))
             {
-                lastBouncedPlatform = hit.gameObject;
-                ScoreManager.Instance.AddScore(1);
-                Debug.Log("Score +1");
+                // Award score only once per unique platform
+                if (!visitedPlatforms.Contains(hit.gameObject))
+                {
+                    visitedPlatforms.Add(hit.gameObject);
+                    ScoreManager.Instance.AddScore(1);
+                    Debug.Log("Score +1");
+                }
             }
             sr.sprite = facingRight ? babyRight : babyLeft;
         }
