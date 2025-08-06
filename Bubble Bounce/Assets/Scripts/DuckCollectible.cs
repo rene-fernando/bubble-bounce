@@ -33,6 +33,8 @@ public class DuckCollectible : MonoBehaviour
                 audioSource.PlayOneShot(collectSound);
             }
 
+            FindFirstObjectByType<DuckSpawner>()?.ClearCurrentDuck();
+
             Destroy(gameObject);
         }
     }

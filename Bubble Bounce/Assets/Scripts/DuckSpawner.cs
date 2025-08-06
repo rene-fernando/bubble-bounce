@@ -12,6 +12,8 @@ public class DuckSpawner : MonoBehaviour
     public Transform player; // Assign this in the inspector
     public float duckSpawnInterval = 2f;
 
+    private GameObject currentDuck;
+
     void Start()
     {
         StartCoroutine(SpawnDucksContinuously());
@@ -28,6 +30,12 @@ public class DuckSpawner : MonoBehaviour
 
     private void SpawnDuckWave()
     {
+        if (currentDuck != null)
+        {
+            // Only allow one duck on screen at a time
+            return;
+        }
+
         GameObject[] bubbles = GameObject.FindGameObjectsWithTag("Platform");
 
         if (bubbles.Length == 0)
@@ -59,6 +67,7 @@ public class DuckSpawner : MonoBehaviour
             {
                 Vector3 duckPos = pos + new Vector3(0, verticalOffset, 0);
                 GameObject duck = Instantiate(duckPrefab, duckPos, Quaternion.identity);
+                currentDuck = duck;
                 StartCoroutine(ParentDuckNextFrame(duck.transform, bubble.transform));
                 chosenSpots.Add(bubble.transform);
             }
@@ -75,6 +84,12 @@ public class DuckSpawner : MonoBehaviour
     {
         yield return new WaitForEndOfFrame(); // Wait for the current frame to finish
         yield return null; // Wait for one additional frame to ensure stability
+
+        if (duck == null)
+        {
+            currentDuck = null;
+            yield break;
+        }
 
         // Only parent if duck isn't the player and bubble is valid
         if (duck != null && bubble != null &&
@@ -95,5 +110,10 @@ public class DuckSpawner : MonoBehaviour
                 Debug.LogWarning($"Bubble {bubble?.name} became invalid before parenting.");
             }
         }
+    }
+
+    public void ClearCurrentDuck()
+    {
+        currentDuck = null;
     }
 }

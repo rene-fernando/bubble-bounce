@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using TMPro;
+using UnityEngine.UI;
 
 public class GameAudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
-    public TextMeshProUGUI muteButtonText;
+    public Image muteButtonImage; // UI Image on the button
+    public Sprite soundOnSprite;
+    public Sprite soundOffSprite;
 
     private bool isMuted = false;
     private float lastVolumeBeforeMute = 1f;
@@ -16,36 +18,39 @@ public class GameAudioManager : MonoBehaviour
     {
         // Load saved volume from PlayerPrefs
         float savedVolume = PlayerPrefs.GetFloat(volumeKey, 1f);
+        isMuted = PlayerPrefs.GetInt("IsMuted", 0) == 1;
+
+        if (isMuted)
+        {
+            audioMixer.SetFloat(volumeKey, -80f);
+            muteButtonImage.sprite = soundOffSprite;
+        }
+        else
+        {
+            audioMixer.SetFloat(volumeKey, LinearToDecibel(savedVolume));
+            muteButtonImage.sprite = soundOnSprite;
+        }
+
         lastVolumeBeforeMute = savedVolume;
-        float dB = LinearToDecibel(savedVolume);
-        audioMixer.SetFloat("MasterVolume", dB);
     }
 
     public void ToggleMute()
     {
-        if (!audioMixer.GetFloat("MasterVolume", out float currentVolume))
-        {
-            Debug.LogWarning("Couldn't get MasterVolume.");
-            return;
-        }
-
         if (!isMuted)
         {
-            lastVolumeBeforeMute = Mathf.Pow(10f, currentVolume / 20f);
-            audioMixer.SetFloat("MasterVolume", -80f);
+            audioMixer.SetFloat(volumeKey, -80f);
+            muteButtonImage.sprite = soundOffSprite;
             isMuted = true;
         }
         else
         {
-            float dB = LinearToDecibel(lastVolumeBeforeMute);
-            audioMixer.SetFloat("MasterVolume", dB);
+            audioMixer.SetFloat(volumeKey, LinearToDecibel(lastVolumeBeforeMute));
+            muteButtonImage.sprite = soundOnSprite;
             isMuted = false;
         }
 
-        if (muteButtonText != null)
-        {
-            muteButtonText.text = isMuted ? "Unmute" : "Mute";
-        }
+        PlayerPrefs.SetInt("IsMuted", isMuted ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     private float LinearToDecibel(float linear)
