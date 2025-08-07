@@ -25,7 +25,6 @@ public class BubbleSpawner : MonoBehaviour
     {
         highestYSpawned = startY;
 
-        // Spawn bubbles initially to fill buffer above player
         while (highestYSpawned < player.position.y + spawnBufferAbove)
         {
             SpawnNextBubble();
@@ -34,13 +33,11 @@ public class BubbleSpawner : MonoBehaviour
 
     void Update()
     {
-        // Spawn more bubbles ahead of the player
         while (highestYSpawned < player.position.y + spawnBufferAbove)
         {
             SpawnNextBubble();
         }
 
-        // Destroy bubbles that are too far below
         for (int i = activeBubbles.Count - 1; i >= 0; i--)
         {
             if (activeBubbles[i].transform.position.y < player.position.y - destroyBelowDistance)
@@ -70,13 +67,12 @@ public class BubbleSpawner : MonoBehaviour
         {
             bubble.AddComponent<MovingPlatform>();
         }
-        // All bubbles will bob regardless of movement type
+
         bubble.AddComponent<BubbleBobbing>().Initialize(bobbingAmplitude, bobbingFrequency);
 
         highestYSpawned += verticalSpacing;
     }
 }
-// Bobbing behavior for all bubbles
 public class BubbleBobbing : MonoBehaviour
 {
     private float amplitude;

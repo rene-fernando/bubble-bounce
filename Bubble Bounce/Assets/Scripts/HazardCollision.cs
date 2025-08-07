@@ -18,7 +18,6 @@ public class HazardCollision : MonoBehaviour
                 }
             }
             Destroy(gameObject);
-            // Optional: Trigger damage, animation, or sound here
         }
     }
 }

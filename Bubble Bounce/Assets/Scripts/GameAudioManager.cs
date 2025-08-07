@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameAudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
-    public Image muteButtonImage; // UI Image on the button
+    public Image muteButtonImage; 
     public Sprite soundOnSprite;
     public Sprite soundOffSprite;
 
@@ -16,7 +16,7 @@ public class GameAudioManager : MonoBehaviour
 
     void Start()
     {
-        // Load saved volume from PlayerPrefs
+        
         float savedVolume = PlayerPrefs.GetFloat(volumeKey, 1f);
         isMuted = PlayerPrefs.GetInt("IsMuted", 0) == 1;
 

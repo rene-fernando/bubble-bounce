@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BackgroundFollower : MonoBehaviour
 {
-    public Transform target; // Assign the Main Camera here in the inspector
+    public Transform target; 
     private Vector3 offset;
 
     void Start()

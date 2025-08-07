@@ -10,11 +10,10 @@ public class DuckCollectible : MonoBehaviour
     {
         audioSource = gameObject.AddComponent<AudioSource>();
 
-        // Route to SFX AudioMixerGroup if available
         AudioMixerGroup[] mixerGroups = Resources.FindObjectsOfTypeAll<AudioMixerGroup>();
         foreach (var group in mixerGroups)
         {
-            if (group.name == "SFX") // Make sure this matches your AudioMixer group name
+            if (group.name == "SFX") 
             {
                 audioSource.outputAudioMixerGroup = group;
                 break;

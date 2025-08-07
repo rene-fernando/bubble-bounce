@@ -9,7 +9,7 @@ public class DuckSpawner : MonoBehaviour
     public int numberOfDucks = 10;
     public float verticalOffset = 0.5f;
     public float minDistanceBetweenDucks = 0.75f;
-    public Transform player; // Assign this in the inspector
+    public Transform player; 
     public float duckSpawnInterval = 2f;
 
     private GameObject currentDuck;
@@ -32,7 +32,6 @@ public class DuckSpawner : MonoBehaviour
     {
         if (currentDuck != null)
         {
-            // Only allow one duck on screen at a time
             return;
         }
 
@@ -53,7 +52,6 @@ public class DuckSpawner : MonoBehaviour
             GameObject bubble = bubbles[Random.Range(0, bubbles.Length)];
             Vector3 pos = bubble.transform.position;
 
-            // Favor bubbles around or above the player
             if (!bubble.activeInHierarchy ||
                 pos.x < -7f || pos.x > 7f ||
                 pos.y < player.position.y || pos.y > player.position.y + 30f)
@@ -82,8 +80,8 @@ public class DuckSpawner : MonoBehaviour
 
     private IEnumerator ParentDuckNextFrame(Transform duck, Transform bubble)
     {
-        yield return new WaitForEndOfFrame(); // Wait for the current frame to finish
-        yield return null; // Wait for one additional frame to ensure stability
+        yield return new WaitForEndOfFrame(); 
+        yield return null; 
 
         if (duck == null)
         {
@@ -91,7 +89,7 @@ public class DuckSpawner : MonoBehaviour
             yield break;
         }
 
-        // Only parent if duck isn't the player and bubble is valid
+       
         if (duck != null && bubble != null &&
             duck.gameObject.scene.IsValid() &&
             bubble.gameObject.scene.IsValid() &&
@@ -99,7 +97,7 @@ public class DuckSpawner : MonoBehaviour
             !bubble.CompareTag("Player") &&
             !duck.CompareTag("Player"))
         {
-            // Final check before parenting
+
             if (bubble != null && bubble.gameObject.activeInHierarchy)
             {
                 duck.SetParent(bubble);

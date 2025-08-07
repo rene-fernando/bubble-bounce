@@ -1,11 +1,11 @@
 using UnityEngine;
-using TMPro; // Add this!
+using TMPro; 
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
-    public TextMeshProUGUI scoreText;  // ← TMP type
+    public TextMeshProUGUI scoreText; 
 
     private int score = 0;
 

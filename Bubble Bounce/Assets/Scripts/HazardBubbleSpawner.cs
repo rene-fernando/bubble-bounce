@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Audio; // Added for AudioMixerGroup support
+using UnityEngine.Audio; 
 
 public class HazardBubbleSpawner : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class HazardBubbleSpawner : MonoBehaviour
     private float lastY;
 
     [Header("Audio")]
-    public AudioMixerGroup sfxGroup; // Assign in inspector
+    public AudioMixerGroup sfxGroup; 
 
     void Start()
     {
@@ -54,8 +54,7 @@ public class HazardBubbleSpawner : MonoBehaviour
     IEnumerator SpawnHazardAtY(float baseY)
     {
         float randomX = transform.position.x + Random.Range(-xRange, xRange);
-        float randomY = baseY + Random.Range(-5f, 5f); // Slightly more vertical spread
-
+        float randomY = baseY + Random.Range(-5f, 5f); 
         GameObject hazard = Instantiate(hazardPrefab, new Vector3(randomX, randomY, 0f), Quaternion.identity);
         activeHazards.Add(hazard);
 
@@ -67,7 +66,6 @@ public class HazardBubbleSpawner : MonoBehaviour
 
         HazardCollision destroyScript = hazard.AddComponent<HazardCollision>();
 
-        // Load and assign the damage sound
         AudioClip damageSound = Resources.Load<AudioClip>("sounds/damage");
         if (damageSound != null)
         {
@@ -76,7 +74,7 @@ public class HazardBubbleSpawner : MonoBehaviour
             audioSource.playOnAwake = false;
             if (sfxGroup != null)
             {
-                audioSource.outputAudioMixerGroup = sfxGroup; // Route through SFX mixer group
+                audioSource.outputAudioMixerGroup = sfxGroup;
             }
             destroyScript.damageSound = damageSound;
             destroyScript.audioSource = audioSource;
@@ -86,7 +84,6 @@ public class HazardBubbleSpawner : MonoBehaviour
             Debug.LogWarning("Damage sound not found in Resources/sounds/damage");
         }
 
-        // Randomize movement so they aren't synchronized
         HazardMover mover = hazard.GetComponent<HazardMover>();
         if (mover != null)
         {

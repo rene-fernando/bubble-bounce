@@ -4,7 +4,7 @@ public class HazardMover : MonoBehaviour
 {
     public float moveDistance = 4f;
     public float moveSpeed = 1f;
-    public float startDelay = 0f; // delay before movement starts
+    public float startDelay = 0f; 
 
     private Vector3 startPosition;
     private float direction = 1f;
@@ -13,7 +13,7 @@ public class HazardMover : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        timer = startDelay; // wait before starting
+        timer = startDelay; 
     }
 
     void Update()

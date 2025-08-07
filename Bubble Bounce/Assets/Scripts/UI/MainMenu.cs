@@ -32,7 +32,6 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        // If Enter/Return is pressed, start the game
         if (Input.GetKeyDown(KeyCode.Return))
         {
             PlayGame();

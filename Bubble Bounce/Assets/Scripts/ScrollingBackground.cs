@@ -17,7 +17,6 @@ public class ScrollingBackground : MonoBehaviour
     {
         float targetYOffset = Camera.main.transform.position.y * scrollSpeed;
 
-        // Smooth the transition
         currentYOffset = Mathf.Lerp(currentYOffset, targetYOffset, Time.deltaTime * smoothing);
 
         rend.material.mainTextureOffset = new Vector2(0, currentYOffset);

@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
-    public Image[] hearts; // Full hearts
-    public Image[] emptyHearts; // Empty hearts
+    public Image[] hearts;
+    public Image[] emptyHearts; 
     public int maxLives = 3;
     private int currentLives;
 
@@ -23,7 +23,7 @@ public class HealthManager : MonoBehaviour
         if (currentLives <= 0)
         {
             Debug.Log("Game Over");
-            Invoke("ResetLevel", 2f); // Wait 2 seconds before resetting
+            Invoke("ResetLevel", 2f); 
         }
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio; // Added for AudioMixerGroup
+using UnityEngine.Audio; 
 using System.Collections;
 using System.Collections.Generic;
 
@@ -33,7 +33,6 @@ public class PlayerBounce : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer;
 
-    // Movement and sprite fields
     public Sprite babyLeft;
     public Sprite babyRight;
     public Sprite babyLeftJump;
@@ -41,7 +40,7 @@ public class PlayerBounce : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     public AudioClip bounceSound;
-    public AudioMixerGroup sfxMixerGroup; // New field to assign SFX mixer group
+    public AudioMixerGroup sfxMixerGroup; 
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -58,7 +57,7 @@ public class PlayerBounce : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (sfxMixerGroup != null)
         {
-            audioSource.outputAudioMixerGroup = sfxMixerGroup; // Route bounce sound through SFX mixer group
+            audioSource.outputAudioMixerGroup = sfxMixerGroup; 
         }
     }
 
@@ -66,20 +65,16 @@ public class PlayerBounce : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Horizontal");
 
-        // Update facing direction
         if (moveInput > 0) facingRight = true;
         else if (moveInput < 0) facingRight = false;
 
-        // Horizontal movement
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-        // Update jump sprite while airborne
         if (!IsGrounded())
         {
             sr.sprite = facingRight ? babyRightJump : babyLeftJump;
         }
 
-        // Jumping when Space is pressed
         if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -88,14 +83,12 @@ public class PlayerBounce : MonoBehaviour
             sr.sprite = facingRight ? babyRightJump : babyLeftJump;
         }
 
-        // Landed
         if (IsGrounded() && rb.linearVelocity.y <= 0.1f)
         {
             isJumping = false;
             Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
             if (hit != null && hit.CompareTag("Platform") && !hit.CompareTag("Ground"))
             {
-                // Award score only once per unique platform
                 if (!visitedPlatforms.Contains(hit.gameObject))
                 {
                     visitedPlatforms.Add(hit.gameObject);
@@ -106,7 +99,6 @@ public class PlayerBounce : MonoBehaviour
             sr.sprite = facingRight ? babyRight : babyLeft;
         }
 
-        // Reset the scene if player falls too low
         Vector3 bottomOfCamera = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
         if (transform.position.y < bottomOfCamera.y - 1f)
         {
@@ -132,7 +124,6 @@ public class PlayerBounce : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform") && !collision.gameObject.CompareTag("Ground"))
         {
-            // Parent the BubbleBaby to the platform when standing on it
             Debug.Log($"Parenting BubbleBaby to {collision.gameObject.name}");
             transform.SetParent(collision.transform);
         }
@@ -157,7 +148,7 @@ public class PlayerBounce : MonoBehaviour
 
     private IEnumerator UnparentAfterFrame()
     {
-        yield return null; // Wait for the next frame
+        yield return null; 
         Debug.Log("Unparenting player from platform.");
         transform.SetParent(null);
     }

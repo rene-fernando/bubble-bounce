@@ -14,7 +14,7 @@ public class MovingPlatform : MonoBehaviour
     void Start()
     {
         startPos = transform.position;
-        timeOffset = Random.Range(0f, 2f * Mathf.PI); // prevents synchronized bobbing
+        timeOffset = Random.Range(0f, 2f * Mathf.PI); 
     }
 
     void Update()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
-    public GameObject popEffect; // Assign in inspector
+    public GameObject popEffect; 
 
     private HealthManager healthManager;
 
